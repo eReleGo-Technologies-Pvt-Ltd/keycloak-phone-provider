@@ -137,6 +137,9 @@ public class RegistrationPhoneVerificationCode implements FormAction, FormAction
 
     String phoneNumber = formData.getFirst(FIELD_PHONE_NUMBER);
 
+    
+    if (!Validation.isBlank(phoneNumber)){
+    
     if (Validation.isBlank(phoneNumber)){
       context.error(Errors.INVALID_REGISTRATION);
       errors.add(new FormMessage(FIELD_PHONE_NUMBER, SupportPhonePages.Errors.MISSING));
@@ -157,6 +160,7 @@ public class RegistrationPhoneVerificationCode implements FormAction, FormAction
 
     String verificationCode = formData.getFirst(FIELD_VERIFICATION_CODE);
     TokenCodeRepresentation tokenCode = getTokenCodeService(session).ongoingProcess(phoneNumber, TokenCodeType.REGISTRATION);
+    
     if (Validation.isBlank(verificationCode) || tokenCode == null || !tokenCode.getCode().equals(verificationCode)) {
       context.error(Errors.INVALID_REGISTRATION);
       formData.remove(FIELD_VERIFICATION_CODE);
@@ -164,8 +168,12 @@ public class RegistrationPhoneVerificationCode implements FormAction, FormAction
       context.validationError(formData, errors);
       return;
     }
-
     context.getSession().setAttribute("tokenId", tokenCode.getId());
+    
+    }
+    
+
+//    context.getSession().setAttribute("tokenId", tokenCode.getId());
     context.success();
   }
 
@@ -178,6 +186,8 @@ public class RegistrationPhoneVerificationCode implements FormAction, FormAction
     MultivaluedMap<String, String> formData = context.getHttpRequest().getDecodedFormParameters();
 
     String phoneNumber = formData.getFirst(FIELD_PHONE_NUMBER);
+    
+    if (!Validation.isBlank(phoneNumber)){
 
     try {
       phoneNumber = Utils.canonicalizePhoneNumber(context.getSession(),phoneNumber);
@@ -197,6 +207,8 @@ public class RegistrationPhoneVerificationCode implements FormAction, FormAction
       PhoneOtpCredentialProvider ocp = (PhoneOtpCredentialProvider) context.getSession()
           .getProvider(CredentialProvider.class, PhoneOtpCredentialProviderFactory.PROVIDER_ID);
       ocp.createCredential(context.getRealm(), context.getUser(), PhoneOtpCredentialModel.create(phoneNumber,tokenId,0));
+    }
+    
     }
 
   }

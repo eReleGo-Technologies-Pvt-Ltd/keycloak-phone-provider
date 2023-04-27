@@ -23,8 +23,7 @@ public class MunshifySmsSenderService implements MessageSenderService {
 
 	  //The request path to send the verification code URL
 	  private static final String
-	          SERVER_URL="http://20.219.220.180:8082/api/otp/send";
-
+	          SERVER_URL="http://localhost:8082/api/otp/send";
 
 	  public MunshifySmsSenderService(Config.Scope config, RealmModel realm) {
 	    this.config = config;
@@ -35,6 +34,8 @@ public class MunshifySmsSenderService implements MessageSenderService {
 	  public void sendSmsMessage(TokenCodeType type, String phoneNumber, String code, int expires, String kind) throws MessageSendException {
 
 	    HttpPost httpPost = new HttpPost(SERVER_URL);
+	    
+	    System.out.println("SERVER_URL:::::::::::"+SERVER_URL);
 	   
 	    System.out.println("Phone no with country code:::::::::::"+phoneNumber);
    	 

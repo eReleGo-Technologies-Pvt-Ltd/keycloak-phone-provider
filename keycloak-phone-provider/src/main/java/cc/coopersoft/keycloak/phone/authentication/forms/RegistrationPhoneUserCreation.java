@@ -204,12 +204,13 @@ public class RegistrationPhoneUserCreation implements FormActionFactory, FormAct
 
     boolean success = true;
     List<FormMessage> errors = new ArrayList<>();
-    if (Validation.isBlank(phoneNumber)) {
-      errors.add(new FormMessage(FIELD_PHONE_NUMBER, SupportPhonePages.Errors.MISSING.message()));
-      context.error(Errors.INVALID_REGISTRATION);
-      context.validationError(formData, errors);
-      success = false;
-    }else {
+//    if (Validation.isBlank(phoneNumber)) {
+//      errors.add(new FormMessage(FIELD_PHONE_NUMBER, SupportPhonePages.Errors.MISSING.message()));
+//      context.error(Errors.INVALID_REGISTRATION);
+//      context.validationError(formData, errors);
+//      success = false;
+//    }else {
+    if (!Validation.isBlank(phoneNumber)) {
       try {
         phoneNumber = Utils.canonicalizePhoneNumber(session,phoneNumber);
         if (!Utils.isDuplicatePhoneAllowed(session) &&
@@ -226,12 +227,14 @@ public class RegistrationPhoneUserCreation implements FormActionFactory, FormAct
         context.validationError(formData, errors);
         success = false;
       }
-    }
+   }
 
+    if (!Validation.isBlank(phoneNumber)) {
     context.getEvent().detail(FIELD_PHONE_NUMBER, phoneNumber);
     if (isPhoneNumberAsUsername(context)){
-      context.getEvent().detail(Details.USERNAME, phoneNumber);
-      formData.putSingle(UserModel.USERNAME,phoneNumber);
+	      context.getEvent().detail(Details.USERNAME, phoneNumber);
+	      formData.putSingle(UserModel.USERNAME,phoneNumber);
+    	}
     }
 
     UserProfileProvider profileProvider = session.getProvider(UserProfileProvider.class);
@@ -284,30 +287,37 @@ public class RegistrationPhoneUserCreation implements FormActionFactory, FormAct
     MultivaluedMap<String, String> formData = context.getHttpRequest().getDecodedFormParameters();
 
     String phoneNumber = formData.getFirst(FIELD_PHONE_NUMBER);
+    var session = context.getSession();
     String email = formData.getFirst(UserModel.EMAIL);
     String username = formData.getFirst(UserModel.USERNAME);
-
-    var session = context.getSession();
-    try {
-      phoneNumber = Utils.canonicalizePhoneNumber(session,phoneNumber);
-    } catch (PhoneNumberInvalidException e) {
-      // verified in validate process
-      throw new IllegalStateException();
-    }
-
-    if (context.getRealm().isRegistrationEmailAsUsername()){
-      username = email;
-    } else if (isPhoneNumberAsUsername(context)){
-      username = phoneNumber;
-      formData.add(UserModel.USERNAME,phoneNumber);
-    }
-
-    context.getEvent().detail(Details.USERNAME, username)
-        .detail(Details.REGISTER_METHOD, "form")
-        .detail(FIELD_PHONE_NUMBER,phoneNumber);
-
-    if (!isHideEmail(context)){
-      context.getEvent().detail(Details.EMAIL,email);
+    
+    if (!Validation.isBlank(phoneNumber)) {
+    
+	    
+	
+	    
+	    try {
+	      phoneNumber = Utils.canonicalizePhoneNumber(session,phoneNumber);
+	    } catch (PhoneNumberInvalidException e) {
+	      // verified in validate process
+	      throw new IllegalStateException();
+	    }
+	
+	    if (context.getRealm().isRegistrationEmailAsUsername()){
+	      username = email;
+	    } else if (isPhoneNumberAsUsername(context)){
+	      username = phoneNumber;
+	      formData.add(UserModel.USERNAME,phoneNumber);
+	    }
+	
+	    context.getEvent().detail(Details.USERNAME, username)
+	        .detail(Details.REGISTER_METHOD, "form")
+	        .detail(FIELD_PHONE_NUMBER,phoneNumber);
+	
+	    if (!isHideEmail(context)){
+	      context.getEvent().detail(Details.EMAIL,email);
+	    }
+    
     }
 
     UserProfileProvider profileProvider = session.getProvider(UserProfileProvider.class);
