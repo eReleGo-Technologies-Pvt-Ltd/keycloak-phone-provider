@@ -23,7 +23,7 @@ public class MunshifySmsSenderService implements MessageSenderService {
 
 	  //The request path to send the verification code URL
 	  private static final String
-	          SERVER_URL="http://localhost:8082/api/otp/send";
+	          SERVER_URL="http://localhost:8082/api/otp/sendKcOtp";
 
 	  public MunshifySmsSenderService(Config.Scope config, RealmModel realm) {
 	    this.config = config;
@@ -51,13 +51,13 @@ public class MunshifySmsSenderService implements MessageSenderService {
 	    
    	 
    	 
-   	 final String json = "[{\n"
+   	 final String json = "{\n"
    			 + " \"requester\": \""+phoneNumber+"\",\n"
    			 + " \"requesterType\": \"MOBILE\",\n"
    			 + " \"otpSource\":\"EMAIL_VERIFICATION\",\n"
    			 + " \"otpType\":\"NUMERIC\",\n"
    			 + " \"otp\": \"" + code + "\"\n" 
-   			 + " }]";
+   			 + " }";
    	 System.out.println("JSON :::::::: "+json);
    	 
    	 StringEntity entity;
