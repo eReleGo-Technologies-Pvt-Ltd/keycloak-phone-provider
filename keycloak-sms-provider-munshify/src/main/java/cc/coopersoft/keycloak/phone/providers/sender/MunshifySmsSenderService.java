@@ -23,7 +23,9 @@ public class MunshifySmsSenderService implements MessageSenderService {
 
 	  //The request path to send the verification code URL
 	  private static final String
-	          SERVER_URL="http://localhost:8082/api/otp/sendKcOtp";
+	  //SERVER_URL="http://localhost:8082/api/otp/sendKcOtp";
+	  //SERVER_URL="https://dev-messageapi.munshify.com/api/otp/sendKcOtp";
+	  SERVER_URL="https://tenax-api.munshify.com/api/otp/sendKcOtp";
 
 	  public MunshifySmsSenderService(Config.Scope config, RealmModel realm) {
 	    this.config = config;
