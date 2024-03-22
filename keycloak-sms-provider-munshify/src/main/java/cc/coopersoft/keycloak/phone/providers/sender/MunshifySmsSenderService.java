@@ -45,11 +45,12 @@ public class MunshifySmsSenderService implements MessageSenderService {
    	 
 	    System.out.println("Phone no without country code:::::::::::"+phoneNumber);
 	    
-	    System.out.println("TokenCodeType::::::"+type);
+	    System.out.println("TokenCodeType::::::"+type.name());
 	    
 	    System.out.println("code::::::"+code);
 	    System.out.println("expires::::::"+expires);
 	    System.out.println("kind::::::"+kind);
+	    
 	    
    	 
    	 
