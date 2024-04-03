@@ -1,4 +1,5 @@
 <#import "template.ftl" as layout>
+<#include "css/login.css">
 <@layout.registrationLayout displayMessage=!messagesPerField.existsError('username','password','code','phoneNumber') displayInfo=realm.password && realm.registrationAllowed && !registrationDisabled??; section>
     <#if section = "header">
         ${msg("loginAccountTitle")}
@@ -37,21 +38,21 @@
                                 </div>
 
 
-                                <div class="${properties.kcFormGroupClass!}">
+                             <#--      <div class="${properties.kcFormGroupClass!}">
                                     <div class="${properties.kcLabelWrapperClass!}">
                                         <ul class="nav nav-pills nav-justified">
-                                            <li role="presentation" v-bind:class="{ active: !phoneActivated }"
+                                           <li role="presentation" v-bind:class="{ active: !phoneActivated }"
                                                 v-on:click="phoneActivated = false">
                                                 <a href="#">
                                                       ${msg("loginByPassword")}
                                                 </a>
-                                            </li>
+                                            </li> 
                                             <li role="presentation" v-bind:class="{ active: phoneActivated }"
                                                 v-on:click="phoneActivated = true"><a href="#">${msg("loginByPhone")}</a>
                                             </li>
                                         </ul>
                                     </div>
-                                </div>
+                                </div>  -->
                             </div>
 
                             <input type="hidden" id="phoneActivated" name="phoneActivated" v-model="phoneActivated">
@@ -138,17 +139,19 @@
                                     </#if>
                                 </div>
 
-                                <div class="${properties.kcFormGroupClass!} row">
+                                <div class="verification-code-div"  class="${properties.kcFormGroupClass!} row">
                                     <div class="${properties.kcLabelWrapperClass!}"  style="padding: 0">
                                         <label for="code" class="${properties.kcLabelClass!}">${msg("verificationCode")}</label>
                                     </div>
-                                    <div class="col-xs-8" style="padding: 0 5px 0 0">
+                                    <div class="col-xs-12" style="padding: 0 5px 0 0">
                                         <input tabindex="0" type="text" id="code" name="code"
                                                aria-invalid="<#if messagesPerField.existsError('code','phoneNumber')>true</#if>"
                                                class="${properties.kcInputClass!}" autocomplete="off"/>
 
                                     </div>
-                                    <div class="col-xs-4" style="padding: 0 0 0 5px">
+                                </div>
+                                <div class="${properties.kcFormGroupClass!}" row>
+                                    <div class="col-xs-12" style="padding: 0 0 0 5px">
                                         <input tabindex="0" style="height: 36px"
                                                class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}"
                                                type="button" v-model="sendButtonText" :disabled='sendButtonText !== initSendButtonText' v-on:click="sendVerificationCode()"/>
@@ -183,7 +186,8 @@
                     data: {
                         errorMessage: '',
                         freezeSendCodeSeconds: 0,
-                        phoneActivated: <#if attemptedPhoneActivated??>true<#else>false</#if>,
+                        phoneActivated: true,
+                        //<#if attemptedPhoneActivated??>true<#else>false</#if>,
                         phoneNumber: '${attemptedPhoneNumber!}',
                         sendButtonText: '${msg("sendVerificationCode")}',
                         initSendButtonText: '${msg("sendVerificationCode")}',
@@ -202,6 +206,8 @@
                         sendVerificationCode: function() {
 
                             const phoneNumber = document.getElementById('phoneNumber').value.trim();
+                            const verificationCodeDiv = document.getElementsByClassName('verification-code-div')[0];
+                            verificationCodeDiv.style.display= "block"
                             if (!phoneNumber) {
                                 this.errorMessage = '${msg("requiredPhoneNumber")}';
                                 document.getElementById('phoneNumber').focus();

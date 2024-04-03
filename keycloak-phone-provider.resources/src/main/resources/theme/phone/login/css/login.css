@@ -1,0 +1,19 @@
+<style type="text/css">
+
+.login-pf body {
+    background:rgb(255, 255, 255) !important;
+}
+.card-pf{
+    border-top : 0px !important;
+    border-color : none !important;
+}
+.verification-code-div {
+  display: none;
+}
+
+.login-pf-page .card-pf {
+    border-radius: 16px !important;
+    /* max-width: 1000px !important; */
+}
+
+</style>

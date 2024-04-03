@@ -1,4 +1,5 @@
 <#import "template.ftl" as layout>
+<#include "css/register.css">
 <@layout.registrationLayout displayMessage=!messagesPerField.existsError('firstName','lastName','email','username','password','password-confirm','phoneNumber','registerCode'); section>
     <#if section = "header">
         ${msg("registerTitle")}
@@ -20,7 +21,7 @@
             </#if>
 
             <#if !hideName??>
-            <div class="${properties.kcFormGroupClass!}">
+          <#--   <div class="${properties.kcFormGroupClass!}">
                 <div class="${properties.kcLabelWrapperClass!}">
                     <label for="firstName" class="${properties.kcLabelClass!}">${msg("firstName")}</label>
                 </div>
@@ -36,7 +37,7 @@
                         </span>
                     </#if>
                 </div>
-            </div>
+            </div> -->
 
             <div class="${properties.kcFormGroupClass!}">
                 <div class="${properties.kcLabelWrapperClass!}">
@@ -158,12 +159,12 @@
 
                 <#if verifyPhone??>
 
-                <div class=" ${properties.kcFormGroupClass!} row">
+                <div class="verification-code-div" class=" ${properties.kcFormGroupClass!} row">
 
                     <div class="${properties.kcLabelWrapperClass!}" style="padding: 0">
                         <label for="registerCode" class="${properties.kcLabelClass!}">${msg("verificationCode")}</label>
                     </div>
-                    <div class="col-xs-8" style="padding: 0 5px 0 0">
+                    <div class="col-xs-12" style="padding: 0 5px 0 0">
                         <input tabindex="0" id="code" name="code"
                                aria-invalid="<#if messagesPerField.existsError('registerCode')>true</#if>"
                                type="text" class="${properties.kcInputClass!}"
@@ -174,7 +175,9 @@
                             </span>
                         </#if>
                     </div>
-                    <div class="col-xs-4" style="padding: 0 0 0 5px">
+                    </div>
+                    <div class=" ${properties.kcFormGroupClass!} row">
+                    <div class="col-xs-12" style="padding: 0 0 0 5px">
                         <input tabindex="0" style="height: 36px"
                                class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}"
                                v-model="sendButtonText" :disabled='sendButtonText !== initSendButtonText'
@@ -197,15 +200,15 @@
             </#if>
 
             <div class="${properties.kcFormGroupClass!}">
+                <div id="kc-form-buttons" class="${properties.kcFormButtonsClass!}">
+                    <input class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}" type="submit" value="${msg("doRegister")}"/>
+                </div>
                 <div id="kc-form-options" class="${properties.kcFormOptionsClass!}">
                     <div class="${properties.kcFormOptionsWrapperClass!}">
                         <span><a href="${url.loginUrl}">${kcSanitize(msg("backToLogin"))?no_esc}</a></span>
                     </div>
                 </div>
 
-                <div id="kc-form-buttons" class="${properties.kcFormButtonsClass!}">
-                    <input class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}" type="submit" value="${msg("doRegister")}"/>
-                </div>
             </div>
         </form>
         </div>
@@ -243,6 +246,8 @@
                         sendVerificationCode: function () {
                             this.errorMessage = '';
                             const phoneNumber = document.getElementById('phoneNumber').value.trim();
+                            const verificationCodeDiv = document.getElementsByClassName('verification-code-div')[0];
+                            verificationCodeDiv.style.display= "block"
                             if (!phoneNumber) {
                                 this.errorMessage = '${msg("requiredPhoneNumber")}';
                                 document.getElementById('phoneNumber').focus();
