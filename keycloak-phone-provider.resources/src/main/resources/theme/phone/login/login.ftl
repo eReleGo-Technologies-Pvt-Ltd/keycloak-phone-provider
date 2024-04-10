@@ -143,7 +143,7 @@
                                     <div class="${properties.kcLabelWrapperClass!}"  style="padding: 0">
                                         <label for="code" class="${properties.kcLabelClass!}">${msg("verificationCode")}</label>
                                     </div>
-                                    <div class="col-xs-12" style="padding: 0 5px 0 0">
+                                    <div class="col-xs-12" style="margin: 0 0 10px 0; padding: 0 0 0 0;">
                                         <input tabindex="0" type="text" id="code" name="code"
                                                aria-invalid="<#if messagesPerField.existsError('code','phoneNumber')>true</#if>"
                                                class="${properties.kcInputClass!}" autocomplete="off"/>
@@ -151,7 +151,7 @@
                                     </div>
                                 </div>
                                 <div class="${properties.kcFormGroupClass!}" row>
-                                    <div class="col-xs-12" style="padding: 0 0 0 5px">
+                                    <div class="col-xs-12" style="padding: 0 0 10px 0">
                                         <input tabindex="0" style="height: 36px"
                                                class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}"
                                                type="button" v-model="sendButtonText" :disabled='sendButtonText !== initSendButtonText' v-on:click="sendVerificationCode()"/>

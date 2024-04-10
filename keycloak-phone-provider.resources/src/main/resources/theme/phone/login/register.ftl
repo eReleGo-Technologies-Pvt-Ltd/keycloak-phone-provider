@@ -164,7 +164,7 @@
                     <div class="${properties.kcLabelWrapperClass!}" style="padding: 0">
                         <label for="registerCode" class="${properties.kcLabelClass!}">${msg("verificationCode")}</label>
                     </div>
-                    <div class="col-xs-12" style="padding: 0 5px 0 0">
+                    <div class="col-xs-12">
                         <input tabindex="0" id="code" name="code"
                                aria-invalid="<#if messagesPerField.existsError('registerCode')>true</#if>"
                                type="text" class="${properties.kcInputClass!}"
@@ -177,7 +177,7 @@
                     </div>
                     </div>
                     <div class=" ${properties.kcFormGroupClass!} row">
-                    <div class="col-xs-12" style="padding: 0 0 0 5px">
+                    <div class="col-xs-12" style="padding: 0 0 0 0px">
                         <input tabindex="0" style="height: 36px"
                                class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}"
                                v-model="sendButtonText" :disabled='sendButtonText !== initSendButtonText'
