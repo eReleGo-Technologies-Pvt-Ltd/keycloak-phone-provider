@@ -35,7 +35,7 @@ public class TokenCodeRepresentation {
 
     private static String generateTokenCode() {
         SecureRandom secureRandom = new SecureRandom();
-        Integer code = secureRandom.nextInt(999_999);
-        return String.format("%06d", code);
+        Integer code = secureRandom.nextInt(99_99);
+        return String.format("%04d", code);
     }
 }
