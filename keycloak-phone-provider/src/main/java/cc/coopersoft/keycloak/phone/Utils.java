@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
+import org.apache.commons.lang3.StringUtils;
 
 public class Utils {
     private static final Logger logger = Logger.getLogger(Utils.class);
@@ -98,6 +99,9 @@ public class Utils {
         var phoneNumberUtil = PhoneNumberUtil.getInstance();
         var resultPhoneNumber = phoneNumber.trim();
         var defaultRegion = defaultRegion(session);
+        if (StringUtils.isEmpty(defaultRegion)) {
+            defaultRegion = "IN";
+         }
         logger.info(String.format("default region '%s' will be used",defaultRegion));
         try {
             var parsedNumber = phoneNumberUtil.parse(resultPhoneNumber, defaultRegion);
