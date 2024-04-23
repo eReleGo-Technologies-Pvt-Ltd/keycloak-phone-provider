@@ -20,6 +20,6 @@ public interface SmsProperties {
     
     public static final String DEFAULT_MOBILE_NUMBERS = "8249210815,7624841503";
     
-    public static final String OTP_SMS_MSG = "Dear ${user}, ${otp} is the OTP to verify your mobile number on ${datetime}. OTP is valid for 15 minutes. DO NOT disclose it to anyone\\n\\n- Team Munshify";
+    public static final String OTP_SMS_MSG = "Dear ${user}, ${otp} is the OTP to verify your mobile number on ${datetime}. OTP is valid for 15 minutes. DO NOT disclose it to anyone\n\n- Team Munshify";
 
 }

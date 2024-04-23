@@ -1,54 +1,50 @@
 package cc.coopersoft.keycloak.phone.providers.sender.utils;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
-
-import java.util.regex.Matcher;
-
 import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 public class Utils {
     
 	
     public static String convertTemplateToBody(String templateString, Map<String, String> valuesMap) {
-	     
-	// Define a pattern to match placeholders in the templateString
+	// Regular expression to match placeholders in the template string
         Pattern pattern = Pattern.compile("\\$\\{([^}]*)\\}");
         
-        // Create a matcher for the templateString
+        // Matcher to find matches in the template string
         Matcher matcher = pattern.matcher(templateString);
         
-        // Create a StringBuilder to store the replaced string
-        StringBuilder result = new StringBuilder();
+        // StringBuffer to build the result
+        StringBuffer result = new StringBuffer();
         
-        // Iterate through the matches
-        int lastEnd = 0;
+        // Iterate through matches and replace placeholders with values from the map
         while (matcher.find()) {
-            // Append the part of the templateString before the placeholder
-            result.append(templateString, lastEnd, matcher.start());
-            
-            // Get the placeholder key
-            String key = matcher.group(1);
-            
-            // Look up the value for the key in the valuesMap
-            String value = valuesMap.get(key);
-            
-            // If the value is found, append it; otherwise, keep the placeholder
-            if (value != null) {
-                result.append(value);
+            String placeholder = matcher.group(1); // Extract placeholder name
+            String replacement = valuesMap.get(placeholder); // Get replacement value from the map
+            if (replacement != null) {
+                matcher.appendReplacement(result, replacement);
             } else {
-                result.append(matcher.group());
+                // If no replacement found, keep the placeholder as is
+                matcher.appendReplacement(result, "\\${" + placeholder + "}");
             }
-            
-            // Update the lastEnd position
-            lastEnd = matcher.end();
         }
         
-        // Append the remaining part of the templateString after the last placeholder
-        result.append(templateString.substring(lastEnd));
+        // Append remaining part of the template string after the last match
+        matcher.appendTail(result);
         
-        // Convert the StringBuilder to a String and return it
         return result.toString();
-	    
+    }
+
+    public static String getResponseJson(String status, int statusCode, String statusMessage) {
+        return "{\"timestamp\": \"" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy'T'HH:mm:ss"))
+                + "\", " + "\"status\": \"" + status + "\", " + "\"statusCode\": " + statusCode + ", "
+                + "\"statusMessage\": \"" + statusMessage + "\"}";
+    }
+
+    public static boolean patternMatches(String inputString, String regexPattern) {
+        return Pattern.compile(regexPattern).matcher(inputString).matches();
     }
 
 }
