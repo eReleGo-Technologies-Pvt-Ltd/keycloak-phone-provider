@@ -11,6 +11,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,9 +45,23 @@ public class MunshifySmsSenderService implements MessageSenderService {
 	      valuesMap.put("user", "User");
       
 	      valuesMap.put("otp", code);
+	      
+	      // Directly get the current date and time in the Asia/Kolkata time zone
+	      ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"));
+	        
+	      // Optional: Format the date-time for display
+	      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z");
+	      String formattedDateTime = zonedDateTime.format(formatter);
+	        
+	      // Print the formatted date-time
+	      LOGGER.info("Current Date and Time in IST: " + formattedDateTime);
+	      
       
-	      valuesMap.put("datetime", LocalDateTime.now().atZone(ZoneId.of("Asia/Kolkata"))
-              .format(DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm:ss")));
+//	      valuesMap.put("datetime", LocalDateTime.now().atZone(ZoneId.of("Asia/Kolkata"))
+//              .format(DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm:ss")));
+
+	      valuesMap.put("datetime", formattedDateTime);	
+
       
 	      String response = Utils.convertTemplateToBody(SmsProperties.OTP_SMS_MSG, valuesMap);
       
